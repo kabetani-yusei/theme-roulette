@@ -57,7 +57,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (animationPhase === "pause") {
-      // fakeStopIndex 停止後、1秒間静止させてから second-stop へ
+      // fakeStopIndex 停止後、1秒間静止
       const t = setTimeout(
         () => setAnimationPhase("second-stop"),
         1000
