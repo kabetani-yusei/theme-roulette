@@ -37,18 +37,13 @@ const theme = createTheme({
 
 const App: React.FC = () => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [animationPhase, setAnimationPhase] =
-    useState<AnimationPhase>("stopped");
-  const [actualStopIndex, setActualStopIndex] =
-    useState<number | null>(null);
+  const [animationPhase, setAnimationPhase] = useState<AnimationPhase>("stopped");
+  const [actualStopIndex, setActualStopIndex] = useState<number | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
 
   const handleSpin = () => {
     if (isSpinning) return;
-    const idx =
-      actualStopIndices[
-        Math.floor(Math.random() * actualStopIndices.length)
-      ];
+    const idx = actualStopIndices[Math.floor(Math.random() * actualStopIndices.length)];
     setActualStopIndex(idx);
     setSelectedTheme(null);
     setIsSpinning(true);
@@ -57,11 +52,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (animationPhase === "pause") {
-      // fakeStopIndex 停止後、1秒間静止
-      const t = setTimeout(
-        () => setAnimationPhase("second-stop"),
-        1000
-      );
+      const t = setTimeout(() => setAnimationPhase("second-stop"), 1000);
       return () => clearTimeout(t);
     }
     if (animationPhase === "highlight") {
@@ -75,44 +66,22 @@ const App: React.FC = () => {
 
   const handleFirstStop = () => setAnimationPhase("pause");
   const handleFinalStop = () => {
-    if (actualStopIndex != null)
+    if (actualStopIndex != null) {
       setSelectedTheme(themeItems[actualStopIndex].text);
+    }
     setAnimationPhase("highlight");
   };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container
-        sx={{
-          py: 4,
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <Typography
-          variant="h2"
-          align="center"
-          sx={{
-            color: "primary.main",
-            fontWeight: "bold",
-            mb: 4,
-          }}
-        >
+      <Container sx={{ py: 4, height: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <Typography variant="h2" align="center" sx={{ color: "primary.main", fontWeight: "bold", mb: 4 }}>
           テーマルーレット
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <RouletteWheel
             items={themeItems}
-            isSpinning={isSpinning}
             animationPhase={animationPhase}
             fakeStopIndex={fakeStopIndex}
             actualStopIndex={actualStopIndex}
@@ -120,21 +89,11 @@ const App: React.FC = () => {
             onFinalStop={handleFinalStop}
           />
           {selectedTheme && animationPhase === "stopped" && (
-            <Typography
-              variant="h4"
-              sx={{ mt: 3, animation: "fadeIn 0.5s" }}
-            >
+            <Typography variant="h4" sx={{ mt: 3, animation: "fadeIn 0.5s" }}>
               選ばれたテーマ: <strong>{selectedTheme}</strong>
             </Typography>
           )}
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            onClick={handleSpin}
-            disabled={isSpinning}
-            sx={{ mt: 4 }}
-          >
+          <Button variant="contained" color="secondary" size="large" onClick={handleSpin} disabled={isSpinning} sx={{ mt: 4 }}>
             {isSpinning ? "回転中..." : "ルーレットを回す"}
           </Button>
         </Box>
