@@ -21,7 +21,7 @@ export interface RouletteWheelProps {
 const ITEM_HEIGHT = 80;
 const VISIBLE_COUNT = 5;
 const MAX_SPEED = 40;
-const LOOP_COUNT = 3;
+const LOOP_COUNT = 2;  // 最低2周
 const MIN_SPEED = 1;
 
 const RouletteWheel: React.FC<RouletteWheelProps> = ({
@@ -49,14 +49,17 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
     if (animationPhase === "first-stop") {
       const traveled = traveledRef.current;
       const totalDistance = totalDistanceRef.current;
+      // 目標距離に到達する直前で停止
       if (totalDistance - traveled <= speedRef.current) {
         positionRef.current = calcTarget(fakeStopIndex);
         tick();
         onFirstStop();
         return;
       }
+      // 減衰率を強める: 進捗の2乗を使用
       const progress = traveled / initialDistanceRef.current;
-      const dynamicSpeed = MAX_SPEED * (1 - progress) + MIN_SPEED * progress;
+      const easeFactor = Math.pow(progress, 2);
+      const dynamicSpeed = MAX_SPEED * (1 - easeFactor) + MIN_SPEED;
       speedRef.current = dynamicSpeed;
       positionRef.current = (positionRef.current + speedRef.current) % totalHeight;
       traveledRef.current = traveled + speedRef.current;
@@ -72,25 +75,23 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
         tick();
         rafRef.current = requestAnimationFrame(animatePhase);
       } else {
-        // Stop at target immediately, then delay before highlighting
         positionRef.current = target;
         tick();
-        setTimeout(() => {
-          onFinalStop();
-        }, 1000);
+        // 1秒待ってハイライト
+        setTimeout(onFinalStop, 1000);
         return;
       }
+
     } else if (animationPhase === "highlight") {
       setHighlightProgress((p) => Math.min(p + 0.02, 1));
-      if (highlightProgress < 1) {
-        rafRef.current = requestAnimationFrame(animatePhase);
-      }
+      if (highlightProgress < 1) rafRef.current = requestAnimationFrame(animatePhase);
       tick();
     }
   };
 
   useEffect(() => {
     if (animationPhase === "first-stop") {
+      // fakeIndex到達までの距離を計算 (最低LOOP_COUNT周)
       const targetOffset = calcTarget(fakeStopIndex);
       const distance = LOOP_COUNT * totalHeight + targetOffset;
       totalDistanceRef.current = distance;
@@ -136,10 +137,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
           const scale = isSel ? 1 + highlightProgress * 0.5 : 1;
           const opacity = isHighlighting && !isSel ? 1 - highlightProgress * 0.8 : 1;
           return (
-            <Box
-              key={i}
-              sx={{ height: ITEM_HEIGHT, display: "flex", alignItems: "center", justifyContent: "center" }}
-            >
+            <Box key={i} sx={{ height: ITEM_HEIGHT, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Typography
                 variant="h5"
                 sx={{
@@ -147,7 +145,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
                   opacity,
                   fontFamily: "'Montserrat', sans-serif",
                   letterSpacing: "0.05em",
-                  fontSize: isSel && isHighlighting ? "2em" : undefined,  // twice font size on highlight
+                  fontSize: isSel && isHighlighting ? "2em" : undefined,
                 }}
                 color={item.color}
               >
