@@ -62,6 +62,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
       traveledRef.current = traveled + speedRef.current;
       tick();
       rafRef.current = requestAnimationFrame(animatePhase);
+
     } else if (animationPhase === "second-stop") {
       const SECOND_SPEED = 20;
       const target = calcTarget(actualStopIndex!);
@@ -71,11 +72,11 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
         tick();
         rafRef.current = requestAnimationFrame(animatePhase);
       } else {
-        // Stop at target then delay highlight by 1s
         positionRef.current = target;
         tick();
-        setTimeout(() => onFinalStop(), 1000);
+        onFinalStop();
       }
+
     } else if (animationPhase === "highlight") {
       setHighlightProgress((p) => Math.min(p + 0.02, 1));
       if (highlightProgress < 1) {
@@ -143,6 +144,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
                   opacity,
                   fontFamily: "'Montserrat', sans-serif",
                   letterSpacing: "0.05em",
+                  fontSize: isSel && isHighlighting ? "2em" : undefined,  // twice font size on highlight
                 }}
                 color={item.color}
               >
