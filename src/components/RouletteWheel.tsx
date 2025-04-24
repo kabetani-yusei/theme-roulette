@@ -40,6 +40,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
   const totalDistanceRef = useRef(0);
   const initialDistanceRef = useRef(0);
   const [renderTrigger, setRenderTrigger] = useState(0);
+  console.log("renderTrigger", renderTrigger);
   const [highlightProgress, setHighlightProgress] = useState(0);
   const tick = useCallback(() => setRenderTrigger((i) => i + 1), []);
 
