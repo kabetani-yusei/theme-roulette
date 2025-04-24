@@ -64,7 +64,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
       rafRef.current = requestAnimationFrame(animatePhase);
 
     } else if (animationPhase === "second-stop") {
-      const SECOND_SPEED = 20; // 今の2倍
+      const SECOND_SPEED = 20;
       const target = calcTarget(actualStopIndex!);
       const dist = (target - positionRef.current + totalHeight) % totalHeight;
       if (dist > SECOND_SPEED) {
@@ -79,6 +79,11 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
 
     } else if (animationPhase === "highlight") {
       setHighlightProgress((p) => Math.min(p + 0.02, 1));
+      // continue highlighting until progress complete
+      if (highlightProgress < 1) {
+        rafRef.current = requestAnimationFrame(animatePhase);
+      }
+      tick();
     }
   };
 
@@ -94,20 +99,20 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
       setHighlightProgress(0);
       rafRef.current = requestAnimationFrame(animatePhase);
     }
-    if (animationPhase === "second-stop") {
+    if (animationPhase === "second-stop" || animationPhase === "highlight") {
       rafRef.current = requestAnimationFrame(animatePhase);
     }
     return () => cancelAnimationFrame(rafRef.current!);
   }, [animationPhase]);
 
   const position = positionRef.current;
-  const startIdx =
-    Math.floor(position / ITEM_HEIGHT) - Math.floor(VISIBLE_COUNT / 2);
+  const startIdx = Math.floor(position / ITEM_HEIGHT) - Math.floor(VISIBLE_COUNT / 2);
   const visible = Array.from(
     { length: VISIBLE_COUNT + 2 },
     (_, i) => (startIdx + i + items.length * 2) % items.length
   );
-  const isHighlighting = animationPhase === "highlight";
+  // Highlight also on stopped
+  const isHighlighting = animationPhase === "highlight" || animationPhase === "stopped";
 
   return (
     <Box sx={{ width: "100%", maxWidth: 500, height: ITEM_HEIGHT * VISIBLE_COUNT, overflow: "hidden", position: "relative" }}>
@@ -128,7 +133,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
           const item = items[idx];
           const isSel = actualStopIndex === idx && isHighlighting;
           const scale = isSel ? 1 + highlightProgress * 0.5 : 1;
-          const opacity = !isSel && isHighlighting ? 1 - highlightProgress * 0.8 : 1;
+          const opacity = isHighlighting && !isSel ? 1 - highlightProgress * 0.8 : 1;
           return (
             <Box
               key={i}

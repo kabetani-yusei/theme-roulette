@@ -50,7 +50,7 @@ const themeItems: ThemeItem[] = [
 ];
 
 const fakeStopIndex = 2;
-const actualStopIndices = [10];
+const actualStopIndices = [4, 12, 14, 16, 17, 18, 19, 22, 25];
 
 const theme = createTheme({
   palette: {
@@ -78,9 +78,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (animationPhase === "pause") {
-      const timer = setTimeout(() => {
-        setAnimationPhase("second-stop");
-      }, 3000); // 3秒停止
+      const timer = setTimeout(() => setAnimationPhase("second-stop"), 3000);
       return () => clearTimeout(timer);
     }
     if (animationPhase === "highlight") {
@@ -114,14 +112,20 @@ const App: React.FC = () => {
             onFirstStop={handleFirstStop}
             onFinalStop={handleFinalStop}
           />
-          {selectedTheme && animationPhase === "stopped" && (
-            <Typography variant="h4" sx={{ mt: 3, animation: "fadeIn 0.5s" }}>
+
+          {/* 最初の回転前のみ表示されるボタン */}
+          {!isSpinning && !selectedTheme && (
+            <Button variant="contained" color="secondary" size="large" onClick={handleSpin} sx={{ mt: 4 }}>
+              ルーレットを回す
+            </Button>
+          )}
+
+          {/* 選ばれたテーマは常に表示 */}
+          {selectedTheme && (
+            <Typography variant="h4" sx={{ mt: 3 }}>
               選ばれたテーマ: <strong>{selectedTheme}</strong>
             </Typography>
           )}
-          <Button variant="contained" color="secondary" size="large" onClick={handleSpin} disabled={isSpinning} sx={{ mt: 4 }}>
-            {isSpinning ? "回転中..." : "ルーレットを回す"}
-          </Button>
         </Box>
       </Container>
     </ThemeProvider>
