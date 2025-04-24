@@ -11,20 +11,47 @@ import {
 import RouletteWheel, { AnimationPhase, ThemeItem } from "./components/RouletteWheel";
 
 const themeItems: ThemeItem[] = [
-  { id: 0, text: "スポーツ", color: "#4fc3f7" },
-  { id: 1, text: "音楽", color: "#f06292" },
-  { id: 2, text: "映画", color: "#4fc3f7" },
-  { id: 3, text: "料理", color: "#f06292" },
-  { id: 4, text: "旅行", color: "#4fc3f7" },
-  { id: 5, text: "ゲーム", color: "#f06292" },
-  { id: 6, text: "アート", color: "#4fc3f7" },
-  { id: 7, text: "科学", color: "#f06292" },
-  { id: 8, text: "歴史", color: "#4fc3f7" },
-  { id: 9, text: "ファッション", color: "#f06292" },
+  { id: 0, text: "ずうっといっしょ！、かわいい", color: "#f06292" },
+  { id: 1, text: "人とAIの調和と創造", color: "#4fc3f7" },
+  { id: 2, text: "コヨーテAI開発", color: "#f06292" },
+  { id: 3, text: "AIのある暮らし", color: "#4fc3f7" },
+  { id: 4, text: "大阪", color: "#f06292" },
+  { id: 5, text: "オリジナルキャラクター", color: "#4fc3f7" },
+  { id: 6, text: "ミャクミャク(脈々)と受け継がれるサービス", color: "#f06292" },
+  { id: 7, text: "無知でも良いじゃん！", color: "#4fc3f7" },
+  { id: 8, text: "シンギュラリティ", color: "#f06292" },
+  { id: 9, text: "関税", color: "#4fc3f7" },
+  { id: 10, text: "NOTAICODING", color: "#f06292" },
+  { id: 11, text: "車内", color: "#4fc3f7" },
+  { id: 12, text: "試験", color: "#f06292" },
+  { id: 13, text: "高すぎる！", color: "#4fc3f7" },
+  { id: 14, text: "のりもの", color: "#f06292" },
+  { id: 15, text: "おかし", color: "#4fc3f7" },
+  { id: 16, text: "嘘", color: "#f06292" },
+  { id: 17, text: "透明", color: "#4fc3f7" },
+  { id: 18, text: "キャンセル", color: "#f06292" },
+  { id: 19, text: "夜", color: "#4fc3f7" },
+  { id: 20, text: "誘惑", color: "#f06292" },
+  { id: 21, text: "みかん", color: "#4fc3f7" },
+  { id: 22, text: "甘い", color: "#f06292" },
+  { id: 23, text: "ハッピー", color: "#4fc3f7" },
+  { id: 24, text: "ラッキー", color: "#f06292" },
+  { id: 25, text: "キュン", color: "#4fc3f7" },
+  { id: 26, text: "無限", color: "#f06292" },
+  { id: 27, text: "もう こないからねー", color: "#4fc3f7" },
+  { id: 28, text: "安心安全", color: "#f06292" },
+  { id: 29, text: "かわいい", color: "#4fc3f7" },
+  { id: 30, text: "役立つもの", color: "#f06292" },
+  { id: 31, text: "えっほえっほ", color: "#4fc3f7" },
+  { id: 32, text: "伝えなきゃ", color: "#f06292" },
+  { id: 33, text: "最強", color: "#4fc3f7" },
+  { id: 34, text: "伝えなきゃ、ラブロマンス", color: "#f06292" },
+  { id: 35, text: "楽しい日本", color: "#4fc3f7"},
 ];
 
-const fakeStopIndex = 3;
-const actualStopIndices = [1, 5, 7, 9];
+
+const fakeStopIndex = 2;
+const actualStopIndices = [10];
 
 const theme = createTheme({
   palette: {
