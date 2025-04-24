@@ -49,7 +49,6 @@ const themeItems: ThemeItem[] = [
   { id: 35, text: "楽しい日本", color: "#4fc3f7"},
 ];
 
-
 const fakeStopIndex = 2;
 const actualStopIndices = [10];
 
@@ -79,23 +78,23 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (animationPhase === "pause") {
-      const t = setTimeout(() => setAnimationPhase("second-stop"), 1000);
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => {
+        setAnimationPhase("second-stop");
+      }, 3000); // 3秒停止
+      return () => clearTimeout(timer);
     }
     if (animationPhase === "highlight") {
-      const t = setTimeout(() => {
+      const timer = setTimeout(() => {
         setAnimationPhase("stopped");
         setIsSpinning(false);
       }, 1500);
-      return () => clearTimeout(t);
+      return () => clearTimeout(timer);
     }
   }, [animationPhase]);
 
   const handleFirstStop = () => setAnimationPhase("pause");
   const handleFinalStop = () => {
-    if (actualStopIndex != null) {
-      setSelectedTheme(themeItems[actualStopIndex].text);
-    }
+    if (actualStopIndex != null) setSelectedTheme(themeItems[actualStopIndex].text);
     setAnimationPhase("highlight");
   };
 
