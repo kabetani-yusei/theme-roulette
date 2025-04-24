@@ -134,7 +134,16 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
               key={i}
               sx={{ height: ITEM_HEIGHT, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
-              <Typography variant="h5" sx={{ transform: `scale(${scale})`, opacity }} color={item.color}>
+              <Typography
+                variant="h5"
+                sx={{
+                  transform: `scale(${scale})`,
+                  opacity,
+                  fontFamily: "'Montserrat', sans-serif",
+                  letterSpacing: "0.05em",
+                }}
+                color={item.color}
+              >
                 {item.text}
               </Typography>
             </Box>
